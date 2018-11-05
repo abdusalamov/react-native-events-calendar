@@ -3,10 +3,10 @@ import {
   View,
   Text,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity, StyleSheet
 } from 'react-native'
 import populateEvents from './Packer'
-import React from 'react'
+import React, { Fragment } from 'react'
 import moment from 'moment'
 import _ from 'lodash'
 
@@ -36,7 +36,8 @@ export default class DayView extends React.PureComponent {
     initPosition = initPosition < 0 ? 0 : initPosition
     this.state = {
       _scrollY: initPosition,
-      packedEvents
+      packedEvents,
+      allDayEventsLength: 0,
     }
     this.onPressDayView = this.onPressDayView.bind(this);
   }
@@ -187,12 +188,15 @@ export default class DayView extends React.PureComponent {
     }
   }
 
+
   render () {
-    const { styles } = this.props
+    const { styles } = this.props;
+    const { renderAllDayEvents, allDayEventsLength} = this.props.allDayEvents;
     return (
       <ScrollView ref={ref => (this._scrollView = ref)}
-        contentContainerStyle={[styles.contentStyle, { width: this.props.width }]}
+        contentContainerStyle={[styles.contentStyle, { width: this.props.width, paddingTop: allDayEventsLength * 57, height: 1200 +  allDayEventsLength * 57}]}
       >
+        {renderAllDayEvents}
         <TouchableOpacity activeOpacity={1} style={{ flex: 1 }} onLongPress={this.onPressDayView}>
           {this._renderLines()}
           {this._renderEvents()}

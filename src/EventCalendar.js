@@ -19,6 +19,7 @@ export default class EventCalendar extends React.Component {
     super(props)
     this.styles = styleConstructor(props.styles)
     this.state = {
+      allDayEventsLength: 0,
       date: moment(this.props.initDate),
       index: this.props.size
     }
@@ -45,10 +46,11 @@ export default class EventCalendar extends React.Component {
   }
 
   _renderItem({ index, item }) {
-    const { width, format24h, initDate, scrollToFirst } = this.props
+    const { width, format24h, initDate, scrollToFirst, allDayEvents } = this.props
     const date = moment(initDate).add(index - this.props.size, 'days')
     return (
       <DayView
+        allDayEvents={this.props.allDayEvents}
         date={date}
         index={index}
         format24h={format24h}
@@ -111,7 +113,6 @@ export default class EventCalendar extends React.Component {
             </TouchableOpacity>
           </View>
         )}
-
         <VirtualizedList
           ref='calendar'
           windowSize={2}
