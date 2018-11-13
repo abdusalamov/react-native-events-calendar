@@ -38,6 +38,7 @@ export default class DayView extends React.PureComponent {
       _scrollY: initPosition,
       packedEvents,
       allDayEventsLength: 0,
+      renderAllDayEvents: null
     }
     this.onPressDayView = this.onPressDayView.bind(this);
   }
@@ -51,6 +52,13 @@ export default class DayView extends React.PureComponent {
 
   componentDidMount () {
     this.props.scrollToFirst && this.scrollToFirst()
+    if(this.props.allDayEvents) {
+      const { allDayEventsLength, renderAllDayEvents } = this.props.allDayEvents;
+      this.setState({
+        allDayEventsLength,
+        renderAllDayEvents
+      })
+    }
   }
 
   scrollToFirst () {
@@ -62,15 +70,15 @@ export default class DayView extends React.PureComponent {
   }
 
   _renderRedLine() {
-      const offset = CALENDER_HEIGHT / 24
-      const { format24h } = this.props
-      const { width, styles } = this.props
-      const timeNowHour = moment().hour()
-      const timeNowMin = moment().minutes()
-      return (
-          <View key={`timeNow`}
+    const offset = CALENDER_HEIGHT / 24
+    const { format24h } = this.props
+    const { width, styles } = this.props
+    const timeNowHour = moment().hour()
+    const timeNowMin = moment().minutes()
+    return (
+      <View key={`timeNow`}
             style={[styles.lineNow, { top: offset * timeNowHour + offset * timeNowMin / 60, width: width - 20 }]}
-          />
+      />
     )
   }
 
@@ -191,11 +199,12 @@ export default class DayView extends React.PureComponent {
 
   render () {
     const { styles } = this.props;
+    const { renderAllDayEvents, allDayEventsLength } = this.state;
     return (
       <ScrollView ref={ref => (this._scrollView = ref)}
-        contentContainerStyle={[styles.contentStyle, { width: this.props.width, paddingTop: this.props.allDayEvents.allDayEventsLength * 57, height: 1200 +  this.props.allDayEvents.allDayEventsLength * 57}]}
+                  contentContainerStyle={[styles.contentStyle, { width: this.props.width, paddingTop: allDayEventsLength* 57, height: 1200 +  allDayEventsLength * 57}]}
       >
-        {this.props.allDayEvents.renderAllDayEvents && this.props.allDayEvents.renderAllDayEvents}
+        {renderAllDayEvents}
         <TouchableOpacity activeOpacity={1} style={{ flex: 1 }} onLongPress={this.onPressDayView}>
           {this._renderLines()}
           {this._renderEvents()}
