@@ -191,12 +191,11 @@ export default class DayView extends React.PureComponent {
 
   render () {
     const { styles } = this.props;
-    const { renderAllDayEvents, allDayEventsLength} = this.props.allDayEvents;
     return (
       <ScrollView ref={ref => (this._scrollView = ref)}
-        contentContainerStyle={[styles.contentStyle, { width: this.props.width, paddingTop: allDayEventsLength * 57, height: 1200 +  allDayEventsLength * 57}]}
+        contentContainerStyle={[styles.contentStyle, { width: this.props.width, paddingTop: this.props.allDayEvents.allDayEventsLength * 57, height: 1200 +  this.props.allDayEvents.allDayEventsLength * 57}]}
       >
-        {renderAllDayEvents}
+        {this.props.allDayEvents.renderAllDayEvents && this.props.allDayEvents.renderAllDayEvents}
         <TouchableOpacity activeOpacity={1} style={{ flex: 1 }} onLongPress={this.onPressDayView}>
           {this._renderLines()}
           {this._renderEvents()}
