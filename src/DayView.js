@@ -52,13 +52,6 @@ export default class DayView extends React.PureComponent {
 
   componentDidMount () {
     this.props.scrollToFirst && this.scrollToFirst()
-    if(this.props.allDayEvents) {
-      const { allDayEventsLength, renderAllDayEvents } = this.props.allDayEvents;
-      this.setState({
-        allDayEventsLength,
-        renderAllDayEvents
-      })
-    }
   }
 
   scrollToFirst () {
@@ -198,6 +191,13 @@ export default class DayView extends React.PureComponent {
 
 
   render () {
+    if(this.props.allDayEvents) {
+      const { allDayEventsLength, renderAllDayEvents } = this.props.allDayEvents;
+      this.setState({
+        allDayEventsLength,
+        renderAllDayEvents
+      })
+    }
     const { styles } = this.props;
     const { renderAllDayEvents, allDayEventsLength } = this.state;
     return (
