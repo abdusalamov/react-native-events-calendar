@@ -26,7 +26,7 @@ export default class EventCalendar extends React.Component {
   }
 
   static defaultProps = {
-    size: 400,
+    size: 30,
     initDate: new Date(),
     formatHeader: 'DD MMMM YYYY'
   }
