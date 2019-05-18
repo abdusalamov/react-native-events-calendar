@@ -131,7 +131,11 @@ export default class DayView extends React.PureComponent {
   _renderEvents () {
     const { styles } = this.props
     const { packedEvents } = this.state
-    let events = packedEvents.map((event, i) => {
+    const events = [];
+    const allDayEvents = [];
+    for (let i = 0; i < packedEvents.length; i++) {
+      const event = packedEvents[i]
+
       const style = {
         left: event.left,
         height: event.height,
@@ -143,7 +147,14 @@ export default class DayView extends React.PureComponent {
       // However it would make sense to overflow the title to a new line if needed
       const numberOfLines = Math.floor(event.height / TEXT_LINE_HEIGHT)
       const formatTime = this.props.format24h ? 'HH:mm' : 'hh:mm A'
-      return (
+
+      if (event.allDay) {
+        style.top = -1 * allDayEvents.length * 55 - 55;
+        style.width = '95%';
+        style.left = 15
+      }
+
+      const item = (
         <View
           key={i}
           style={[styles.event, style]}
@@ -169,15 +180,13 @@ export default class DayView extends React.PureComponent {
           )}
         </View>
       )
-    })
 
-    return (
-      <View>
-        <View style={{ marginLeft: LEFT_MARGIN }}>
-          {events}
-        </View>
-      </View>
-    )
+      if (event.allDay) {
+        allDayEvents.push(item)
+      } else events.push(item)
+    }
+
+    return { events, allDayEvents };
   }
 
   onPressDayView(e) {
@@ -191,23 +200,30 @@ export default class DayView extends React.PureComponent {
 
 
   render () {
-    if(this.props.allDayEvents) {
-      const { allDayEventsLength, renderAllDayEvents } = this.props.allDayEvents;
-      this.setState({
-        allDayEventsLength,
-        renderAllDayEvents
-      })
-    }
+
+    const { events, allDayEvents } = this._renderEvents();
     const { styles } = this.props;
-    const { renderAllDayEvents, allDayEventsLength } = this.state;
+    let height = styles.contentStyle.height
+    let paddingTop = 0;
+    if (allDayEvents) {
+      paddingTop = allDayEvents.length * 55
+      height = styles.contentStyle.height + allDayEvents.length * 55
+    }
+
     return (
       <ScrollView ref={ref => (this._scrollView = ref)}
-                  contentContainerStyle={[styles.contentStyle, { width: this.props.width, paddingTop: allDayEventsLength* 57, height: 1200 +  allDayEventsLength * 57}]}
+                  contentContainerStyle={[styles.contentStyle, { width: this.props.width, height, paddingTop }]}
       >
-        {renderAllDayEvents}
+        <View>
+          {allDayEvents}
+        </View>
         <TouchableOpacity activeOpacity={1} style={{ flex: 1 }} onLongPress={this.onPressDayView}>
           {this._renderLines()}
-          {this._renderEvents()}
+          <View>
+            <View style={{ marginLeft: LEFT_MARGIN }}>
+              {events}
+            </View>
+          </View>
           {this._renderRedLine()}
         </TouchableOpacity>
       </ScrollView>

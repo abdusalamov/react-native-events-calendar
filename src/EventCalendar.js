@@ -50,7 +50,6 @@ export default class EventCalendar extends React.Component {
     const date = moment(initDate).add(index - this.props.size, 'days')
     return (
       <DayView
-        allDayEvents={this.props.allDayEvents}
         date={date}
         index={index}
         format24h={format24h}
