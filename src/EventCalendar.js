@@ -19,7 +19,6 @@ export default class EventCalendar extends React.Component {
     super(props)
     this.styles = styleConstructor(props.styles)
     this.state = {
-      allDayEventsLength: 0,
       date: moment(this.props.initDate),
       index: this.props.size
     }

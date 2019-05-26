@@ -129,8 +129,8 @@ export default class DayView extends React.PureComponent {
   };
 
   _renderEvents () {
-    const { styles } = this.props
-    const { packedEvents } = this.state
+    const { styles, width } = this.props;
+    const { packedEvents } = this.state;
     const events = [];
     const allDayEvents = [];
     for (let i = 0; i < packedEvents.length; i++) {
@@ -149,8 +149,8 @@ export default class DayView extends React.PureComponent {
       const formatTime = this.props.format24h ? 'HH:mm' : 'hh:mm A'
 
       if (event.allDay) {
-        style.top = -1 * allDayEvents.length * 55 - 55;
-        style.width = '95%';
+        style.top = -1 * allDayEvents.length * 47 - 47;
+        style.width = width - 25;
         style.left = 15
       }
 
@@ -206,8 +206,8 @@ export default class DayView extends React.PureComponent {
     let height = styles.contentStyle.height
     let paddingTop = 0;
     if (allDayEvents) {
-      paddingTop = allDayEvents.length * 55
-      height = styles.contentStyle.height + allDayEvents.length * 55
+      paddingTop = allDayEvents.length * 47
+      height = styles.contentStyle.height + allDayEvents.length * 47
     }
 
     return (

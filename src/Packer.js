@@ -81,14 +81,22 @@ function populateEvents (events, screenWidth) {
     for (var i = 0; i < columns.length; i++) {
       var col = columns[i]
       if (!collision(col[col.length - 1], ev)) {
-        col.push(ev)
-        placed = true
-        break
+        if (!ev.allDay) {
+          col.push(ev)
+          placed = true
+          break
+        } else {
+          calculatedEvents.push(ev)
+        }
       }
     }
 
-    if (!placed) {
-      columns.push([ev])
+    if (!placed ) {
+      if (!ev.allDay) {
+        columns.push([ev])
+      } else {
+        calculatedEvents.push(ev)
+      }
     }
 
     if (lastEnd === null || ev.end > lastEnd) {
