@@ -217,7 +217,9 @@ export default class DayView extends React.PureComponent {
         <View>
           {allDayEvents}
         </View>
-        {this._renderLines()}
+        <View>
+            {this._renderLines()}
+        </View>
         <TouchableOpacity activeOpacity={1} style={{ flex: 1 }} onLongPress={this.onPressDayView}>
           <View>
             <View style={{ marginLeft: LEFT_MARGIN }}>
